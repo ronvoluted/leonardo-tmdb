@@ -70,3 +70,16 @@ This is a known Chakra bug:
 >
 > https://chakra-ui.com/docs/styled-system/color-mode#color-mode-flash-issue
 
+### Prisma migrations and `.env`
+To avoid separately maintaining a `.env` for Prisma while maintaining a `.env.local` for Supabase and Auth.js (Vercel actually recommends `.env` be public/committed), `dotenv-cli` is used to load all variables from just `.env.local`. As a result, the command for running Prisma migrations is:
+
+```bash
+# PNPM
+pnpm migrate
+```
+```bash
+# NPM
+npm run migrate
+```
+
+[Prisma official recommendation](https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files#running-migrations-on-different-environments)
