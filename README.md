@@ -61,3 +61,12 @@ Not common practice but something I wanted to try— the intent being to elimina
 - `$Modal` instead of potentially `../../lib/components/Modal`
 
 Components are also in their own directory to save having to always expand `lib > components >` to access such a high-traffic folder. They're prefixed with `@` and `$` to always be at the top of the file tree instead of mixed in somewhere with other directories, though they do look a little odd.
+
+### Flash of unstyled light mode
+This is a known Chakra bug:
+
+> In some cases, when you switch to dark mode and refresh the page, you might experience a quick flash of light mode before it switches correctly.
+> This is a known issue and we're looking to fix it.
+>
+> https://chakra-ui.com/docs/styled-system/color-mode#color-mode-flash-issue
+
