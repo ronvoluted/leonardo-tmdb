@@ -109,6 +109,7 @@ const TechStack = ({ stack }: { stack: Readonly<string[]> }) => {
     <>
       {stack.slice().map((tech) => (
         <Text
+          key={tech}
           textAlign={'center'}
           fontSize={{ base: 'md', sm: 'xl', md: '2xl' }}
           fontWeight={700}
