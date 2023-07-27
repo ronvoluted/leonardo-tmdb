@@ -3,7 +3,7 @@
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider, cookieStorageManagerSSR, localStorageManager } from '@chakra-ui/react';
 
-export function ChakraProviders({ cookies, children }: { cookies: string; children: React.ReactNode }) {
+export default function ChakraProviders({ cookies, children }: { cookies: string; children: React.ReactNode }) {
   const colorModeManager = typeof cookies === 'string' ? cookieStorageManagerSSR(cookies) : localStorageManager;
 
   return (

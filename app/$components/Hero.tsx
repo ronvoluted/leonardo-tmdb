@@ -1,15 +1,11 @@
 'use client';
 
-import type { Dispatch, SetStateAction } from 'react';
-
-import SignUp from '$SignUp';
 import {
   Box,
   Heading,
   Container,
   Text,
   Button,
-  Flex,
   Stack,
   Icon,
   useColorModeValue,
@@ -65,8 +61,8 @@ export default function Hero({ getButtonProps }: HeroProps) {
             <Button
               {...buttonProps}
               colorScheme={'blue'}
-              bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
               px={6}
+              bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
               _hover={{
                 bg: signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.500',
               }}

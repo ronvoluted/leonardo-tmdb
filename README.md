@@ -22,22 +22,16 @@ npm i && npm run dev
 
 [http://localhost:3000](http://localhost:3000)
 
-## Architecture
+## Implementation
 
 ### Authentication
-Supabase hosts the PostgreSQL database, with Prisma managing/querying its schema.
+Supabase hosts the PostgreSQL database, with Prisma managing/querying its schema. NextAuth (Auth.js) is used for reactive auth UI, session data and protected routes. Passwords are secured as follows: `hash(password + pepper, salt)`
 
-Passwords are secured as follows:
-```
-hash(password + pepper, salt)
-```
-The salt is a random 16-byte buffer stored next to the hashed password in the database. It helps protect against rainbow table attacks.
+- The salt is a random 16-byte buffer stored next to the hashed password in the database. It helps protect against rainbow table attacks.
+- The pepper is a random 16-char alphanumeric string stored as an environment variable/deployment secret. It helps protect against dictionary attacks.
+- The hash is NodeJS' native `crypto.scrypt` implementation stored as a 64-char string in the database.  It helps protect against brute-force attacks.
 
-The pepper is a random 16-char alphanumeric string stored as an environment variable/deployment secret. It helps protect against dictionary attacks.
-
-The hash is NodeJS' native `crypto.scrypt` implementation stored as a 64-char string in the database.  It helps protect against brute-force attacks.
-
-NextAuth (Auth.js) is used for reactive auth UI, session data and protected routes.
+Changing/forgetting password would be implemented but is outside scope of the task.
 
 ### GraphQL
 
@@ -71,15 +65,14 @@ This is a known Chakra bug:
 > https://chakra-ui.com/docs/styled-system/color-mode#color-mode-flash-issue
 
 ### Prisma migrations and `.env`
-To avoid separately maintaining a `.env` for Prisma while maintaining a `.env.local` for Supabase and Auth.js (Vercel actually recommends `.env` be public/committed), `dotenv-cli` is used to load all variables from just `.env.local`. As a result, the command for running Prisma migrations is:
+To avoid separately maintaining a `.env` for Prisma while maintaining a `.env.local` for Supabase and Auth.js (Vercel actually recommends `.env` be public/committed), `dotenv-cli` is used to load all variables from just `.env.local`. As a result, the commands for running a Prisma migration, seed, push, pull or execute are:
 
 ```bash
-# PNPM
 pnpm migrate
-```
-```bash
-# NPM
-npm run migrate
+pnpm seed
+pnpm push
+pnpm pull
+pnpm execute
 ```
 
 [Prisma official recommendation](https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files#running-migrations-on-different-environments)

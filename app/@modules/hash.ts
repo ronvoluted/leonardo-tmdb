@@ -3,14 +3,18 @@ import { promisify } from 'util';
 
 type ScryptPromise = (str: string | Buffer, salt: string | Buffer, keylen: number) => Promise<Buffer>;
 
+const secret_pepper = process.env.SUPABASE_PEPPER;
 const scryptPromise = <ScryptPromise>promisify(scrypt);
-
 const KEY_LEN = 32;
+
+if (!secret_pepper) {
+  throw new Error('SUPABASE_PEPPER not set in env.local');
+}
 
 export const hash = async (
   str: string,
-  pepper: string,
-  salt: Buffer = randomBytes(16)
+  salt: Buffer = randomBytes(16),
+  pepper: string = secret_pepper
 ): Promise<{ derivedKey: string; salt: Buffer } | undefined> => {
   const pepperedString = str + pepper;
 
@@ -24,8 +28,8 @@ export const hash = async (
   }
 };
 
-export const hashCheck = async (str: string, pepper: string, salt: Buffer, storedHash: string): Promise<boolean> => {
-  const hashResult = await hash(str, pepper, salt);
+export const hashCheck = async (str: string, hashedStr: string, salt: Buffer): Promise<boolean> => {
+  const hashResult = await hash(str, salt);
 
-  return hashResult ? hashResult.derivedKey === storedHash : false;
+  return hashResult ? hashResult.derivedKey === hashedStr : false;
 };

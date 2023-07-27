@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 
 import {
   Flex,
@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 
 type SignUpProps = {
+  error?: Auth.SignUpError;
   getButtonProps: ReturnType<typeof useDisclosure>['getButtonProps'];
   getDisclosureProps: ReturnType<typeof useDisclosure>['getDisclosureProps'];
 };
@@ -35,7 +36,7 @@ const expandFrames = keyframes`
   80% { scale: 1; opacity: 1; border-radius: 0; }
 `;
 
-export default function SignUp({ getButtonProps, getDisclosureProps }: SignUpProps) {
+export default function SignUp({ error, getButtonProps, getDisclosureProps }: SignUpProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -62,16 +63,25 @@ export default function SignUp({ getButtonProps, getDisclosureProps }: SignUpPro
           </Heading>
           <Text fontSize={'lg'}>to be seated as an authenticated filmgoer</Text>
         </Stack>
+
+        {error && (
+          <Box rounded={'lg'} bg={useColorModeValue('white', 'orange.500')} boxShadow={'lg'} p={2} mb={-4}>
+            <Text align={'center'} fontSize={'sm'} fontWeight={'semibold'}>
+              {error === 'email-exists' ? 'Email' : 'Username'} already in use
+            </Text>
+          </Box>
+        )}
+
         <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.600')} boxShadow={'lg'} p={8}>
-          <Stack spacing={4}>
+          <Stack as="form" spacing={4} method="POST" action="/api/signup">
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" name="email" autoComplete="email" />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
+                <Input type={showPassword ? 'text' : 'password'} name="password" autoComplete="current-password" />
                 <InputRightElement h={'full'}>
                   <Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}
@@ -81,6 +91,7 @@ export default function SignUp({ getButtonProps, getDisclosureProps }: SignUpPro
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
+                type="submit"
                 loadingText="Submitting"
                 size="lg"
                 bg={'blue.400'}
@@ -94,7 +105,10 @@ export default function SignUp({ getButtonProps, getDisclosureProps }: SignUpPro
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
-                Already a user? <Link color={'blue.400'}>Login</Link>
+                Already a user?{' '}
+                <Link href="/api/auth/signin" color={'blue.400'}>
+                  Sign in
+                </Link>
               </Text>
             </Stack>
           </Stack>
