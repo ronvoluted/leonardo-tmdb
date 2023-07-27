@@ -9,7 +9,7 @@ import Navbar from '$Navbar';
 const inter = Inter({ subsets: ['latin'] });
 const title = 'Movies for the authenticated filmgoer';
 const description = 'Leonardo TMDB';
-const url = 'https://leonardo-tmdb.vercel.app';
+const url = process.env.NEXT_PUBLIC_URL || 'https://leonardo-tmdb.vercel.app';
 
 export const metadata: Metadata = {
   title,

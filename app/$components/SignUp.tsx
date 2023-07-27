@@ -64,16 +64,14 @@ export default function SignUp({ error, getButtonProps, getDisclosureProps }: Si
           <Text fontSize={'lg'}>to be seated as an authenticated filmgoer</Text>
         </Stack>
 
-        {error && (
+        {error === 'email-exists' && (
           <Box rounded={'lg'} bg={useColorModeValue('white', 'orange.500')} boxShadow={'lg'} p={2} mb={-4}>
-            <Text align={'center'} fontSize={'sm'} fontWeight={'semibold'}>
-              {error === 'email-exists' ? 'Email' : 'Username'} already in use
-            </Text>
+            <Text align={'center'}>Email already in use</Text>
           </Box>
         )}
 
         <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.600')} boxShadow={'lg'} p={8}>
-          <Stack as="form" spacing={4} method="POST" action="/api/signup">
+          <Stack as="form" spacing={4} method="POST" action="/api/user/signup">
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input type="email" name="email" autoComplete="email" />

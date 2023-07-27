@@ -64,6 +64,11 @@ This is a known Chakra bug:
 >
 > https://chakra-ui.com/docs/styled-system/color-mode#color-mode-flash-issue
 
+### "Extra attributes from the server" DevTools warning
+```Warning: Extra attributes from the server: data-new-gr-c-s-check-loaded,data-gr-ext-installed```
+
+Warnings like the above are caused by extensions such as Grammarly and LastPass modifying the DOM, resulting in a mismatch duration hydration. Disabling the extension will remove this dev-only warning.
+
 ### Prisma migrations and `.env`
 To avoid separately maintaining a `.env` for Prisma while maintaining a `.env.local` for Supabase and Auth.js (Vercel actually recommends `.env` be public/committed), `dotenv-cli` is used to load all variables from just `.env.local`. As a result, the commands for running a Prisma migration, seed, push, pull or execute are:
 
@@ -76,3 +81,7 @@ pnpm execute
 ```
 
 [Prisma official recommendation](https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files#running-migrations-on-different-environments)
+
+
+### Commits
+Normally commits would be more atomic but for blank projects the diffing is less useful, hence the larger commit changes.
