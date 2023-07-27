@@ -8,16 +8,18 @@ import Navbar from '$Navbar';
 const inter = Inter({ subsets: ['latin'] });
 const title = 'Movies for the authenticated filmgoer';
 const description = 'Leonardo TMDB';
+const url = 'https://leonardo-tmdb.vercel.app';
 
 export const metadata: Metadata = {
   title,
   description,
   manifest: '/site.webmanifest',
   themeColor: 'black',
+  metadataBase: new URL(url),
   openGraph: {
     title,
     description,
-    url: 'https:/leonardo-tmdb.vercel.app',
+    url,
     siteName: title,
     locale: 'en_US',
     type: 'website',
