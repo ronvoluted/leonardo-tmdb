@@ -4,6 +4,7 @@ import { gql } from '@apollo/client';
 import MovieGrid from '$MovieGrid';
 import MoviesHeader from '$MoviesHeader';
 import WelcomeModal from '$WelcomeModal';
+import WelcomeProvider from '$WelcomeProvider';
 
 export default async function Movies() {
   const { data } = await apollo().query({
@@ -43,10 +44,12 @@ export default async function Movies() {
   }, []);
 
   return (
-    <>
+    <WelcomeProvider>
       <MoviesHeader />
 
       <MovieGrid movies={movies} />
-    </>
+
+      <WelcomeModal />
+    </WelcomeProvider>
   );
 }

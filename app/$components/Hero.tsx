@@ -37,88 +37,89 @@ export default function Hero({ getButtonProps }: HeroProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const buttonProps = getButtonProps();
   const signUpOpen = buttonProps['aria-expanded'];
-  const { data: session } = useSession();
+  const { status } = useSession();
 
-  return (
-    <>
-      <Container maxW={'3xl'}>
-        <Stack as={Box} textAlign={'center'} spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
-          <Heading fontWeight={600} fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }} lineHeight={'110%'}>
-            Movies for the
-            <br />
-            <Text as={'span'} color={'blue.400'}>
-              authenticated filmgoer
-            </Text>
-          </Heading>
+return (
+  <>
+    <Container maxW={'3xl'}>
+      <Stack as={Box} textAlign={'center'} spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
+        <Heading fontWeight={600} fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }} lineHeight={'110%'}>
+          Movies for the
+          <br />
+          <Text as={'span'} color={'blue.400'}>
+            authenticated filmgoer
+          </Text>
+        </Heading>
 
-          <Box alignSelf={'center'} position={'relative'} display={{ md: 'flex' }}>
-            <Stack direction={'row'} alignSelf={'center'} justify={'center'} spacing={5} pr={{ md: 5 }}>
-              <TechStack stack={stack.slice(0, 4)} />
-            </Stack>
-            <Stack direction={'row'} alignSelf={'center'} justify={'center'} spacing={5} mt={{ base: 2, md: 0 }}>
-              <TechStack stack={stack.slice(4)} />
-            </Stack>
-          </Box>
-
-          <Stack direction={'column'} spacing={3} align={'center'} alignSelf={'center'} position={'relative'}>
-            {session && (
-              <Button
-                as="a"
-                variant="link"
-                href="/movies"
-                colorScheme={'blue'}
-                color="gray.50"
-                px={6}
-                py={2}
-                rounded="full"
-                bg={useColorModeValue('blue.300', 'blue.600')}
-                _hover={{
-                  bg: useColorModeValue('blue.400', 'blue.500'),
-                }}
-              >
-                Enter theatre
-              </Button>
-            )}
-            {!session && (
-              <Button
-                {...buttonProps}
-                colorScheme={'blue'}
-                px={6}
-                bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
-                _hover={{
-                  bg: signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.500',
-                }}
-                style={signUpOpen && !prefersReducedMotion ? buttonStyleSignUpOpened : buttonStyle}
-              >
-                Get tickets
-              </Button>
-            )}
-            <Box>
-              <Icon
-                as={Arrow}
-                color={useColorModeValue('gray.800', 'gray.300')}
-                w={71}
-                position={'absolute'}
-                right={-71}
-                top={'25px'}
-              />
-              <Text
-                fontSize={'md'}
-                fontWeight={500}
-                position={'absolute'}
-                right={'-100px'}
-                transform={'rotate(20deg)'}
-                style={{ userSelect: 'none' }}
-              >
-                Press it!
-              </Text>
-            </Box>
-            ScaleFade
+        <Box alignSelf={'center'} position={'relative'} display={{ md: 'flex' }}>
+          <Stack direction={'row'} alignSelf={'center'} justify={'center'} spacing={5} pr={{ md: 5 }}>
+            <TechStack stack={stack.slice(0, 4)} />
           </Stack>
+          <Stack direction={'row'} alignSelf={'center'} justify={'center'} spacing={5} mt={{ base: 2, md: 0 }}>
+            <TechStack stack={stack.slice(4)} />
+          </Stack>
+        </Box>
+
+        <Stack direction={'column'} spacing={3} align={'center'} alignSelf={'center'} position={'relative'}>
+          {status === 'authenticated' && (
+            <Button
+              as="a"
+              variant="link"
+              href="/movies"
+              colorScheme={'blue'}
+              color="gray.50"
+              px={6}
+              py={2}
+              rounded="full"
+              bg={useColorModeValue('blue.300', 'blue.600')}
+              _hover={{
+                bg: useColorModeValue('blue.400', 'blue.500'),
+              }}
+            >
+              See movies
+            </Button>
+          )}
+          {status !== 'authenticated' && (
+            <Button
+              {...buttonProps}
+              colorScheme={'blue'}
+              px={6}
+              bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
+              _hover={{
+                bg: signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.500',
+              }}
+              style={signUpOpen && !prefersReducedMotion ? buttonStyleSignUpOpened : buttonStyle}
+            >
+              Get tickets
+            </Button>
+          )}
+          <Box>
+            <Icon
+              as={Arrow}
+              color={useColorModeValue('gray.800', 'gray.300')}
+              w={71}
+              position={'absolute'}
+              right={-71}
+              top={'25px'}
+            />
+            <Text
+              fontSize={'md'}
+              fontWeight={500}
+              position={'absolute'}
+              right="-100px"
+              top="0"
+              transform={'rotate(20deg)'}
+              style={{ userSelect: 'none' }}
+            >
+              Press it!
+            </Text>
+          </Box>
+          ScaleFade
         </Stack>
-      </Container>
-    </>
-  );
+      </Stack>
+    </Container>
+  </>
+);
 }
 
 const TechStack = ({ stack }: { stack: Readonly<string[]> }) => {

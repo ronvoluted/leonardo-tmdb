@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@prismaClient';
 import { hash } from '@hash';
 
-const secret_pepper = process.env.SUPABASE_PEPPER;
-
-if (!secret_pepper) {
-  throw new Error('SUPABASE_PEPPER not set in env.local');
-}
+import { prisma } from '@prismaClient';
 
 export async function POST(req: NextRequest) {
   if (!req.body) {

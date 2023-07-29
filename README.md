@@ -25,17 +25,15 @@ npm i && npm run dev
 ## Implementation
 
 ### Authentication
-Supabase hosts the PostgreSQL database, with Prisma managing/querying its schema. NextAuth (Auth.js) is used for reactive auth UI, session data and protected routes. Passwords are secured as follows: `hash(password + pepper, salt)`
+Supabase hosts the PostgreSQL database, with Prisma managing it's schema/making queries. NextAuth (Auth.js) is used for checked authenticated status and protected routes, with credentials password login enabled with both email and username. Passwords are secured as follows: `hash(password + pepper, salt)`
 
-- The salt is a random 16-byte buffer stored next to the hashed password in the database. It helps protect against rainbow table attacks.
-- The pepper is a random 16-char alphanumeric string stored as an environment variable/deployment secret. It helps protect against dictionary attacks.
-- The hash is NodeJS' native `crypto.scrypt` implementation stored as a 64-char string in the database.  It helps protect against brute-force attacks.
-
-Changing/forgetting password would be implemented but is outside scope of the task.
+- The salt is a random 16-byte buffer stored next to the hashed password in the database, used to protect against rainbow table attacks
+- The pepper is a random 16-char alphanumeric string stored as an environment variable/deployment secret, used to protect against dictionary attacks
+- The hash is NodeJS' native `crypto.scrypt` implementation with the derived key stored as a 64-char string in the database, used to protect against brute-force attacks and plaintext vulnerabilities
 
 ### GraphQL
 
-The choice of GraphQL API is an [unofficial wrapper around the TMDB API](https://github.com/nerdsupremacist/tmdb) (The Movie Database, an IMDB alternative). The first 16 trending movies are queried via Apollo Client, filtered if they don't have a tagline, then optionally filtered in UI based on genre tags.
+The choice of GraphQL API is an [unofficial wrapper around the TMDB API](https://github.com/nerdsupremacist/tmdb) (The Movie Database, an IMDB alternative). The first 16 trending movies are queried via Apollo Client then filtered if they don't have a tagline.
 
 ## Remarks
 
@@ -51,10 +49,10 @@ The Prettier, ESLint and TypeScript configs work for me but would naturally be r
 ### @modules and $path aliases
 Not common practice but something I wanted to try— the intent being to eliminate mental overhead of writing relative paths:
 
-- `@utility/randArray` instead of `app/@modules/utility/randArray`
+- `@prismaClient` instead of `app/@modules/prismaClient`
 - `$Modal` instead of potentially `../../lib/components/Modal`
 
-Components are also in their own directory to save having to always expand `lib > components >` to access such a high-traffic folder. They're prefixed with `@` and `$` to always be at the top of the file tree instead of mixed in somewhere with other directories, though they do look a little odd.
+They're prefixed with `@` and `$` to always be at the top of the file tree instead of mixed in somewhere with other directories, though they may look a little unfamiliar. Components also have their own directory to save having to always expand `lib > components >` to access such a high-traffic folder.
 
 ### Flash of unstyled light mode
 This is a known Chakra bug:
@@ -85,3 +83,12 @@ pnpm execute
 
 ### Commits
 Normally commits would be more atomic but for blank projects the diffing is less useful, hence the larger commit changes.
+
+### Possible improvements
+
+- Changing/resetting password
+- Changing email
+- Filtering movies by genre or sorting by rating/date
+- Constraints around job title (characters, length, etc)
+
+

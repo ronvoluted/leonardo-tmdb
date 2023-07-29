@@ -1,14 +1,23 @@
 'use client';
 
+import { useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useSession } from 'next-auth/react';
 import { Box, Flex, Text, Stack, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 
+import { UserContext } from '$UserProvider';
+import { WelcomeContext } from '$WelcomeProvider';
 import ColorModeToggle from '$ColorModeToggle';
 import SignInOutButton from '$SignInOutButton';
 
 export default function Navbar() {
+  const { userDetails } = useContext(UserContext);
+  const { isOpen } = useContext(WelcomeContext);
+  const { status } = useSession();
+
+  const username = isOpen ? userDetails.currentUsername : userDetails.username;
+
   return (
     <Box>
       <Flex
@@ -45,17 +54,17 @@ export default function Navbar() {
           </Link>
         </Flex>
 
-        <Stack w="100%">
-          <Text mx="auto" fontWeight="semibold">
+        {username && (
+          <Stack display="inline-block" w="100%" textAlign="center" fontSize="xl" fontWeight={500}>
             <Text display={{ base: 'none', md: 'inline' }}>Hello </Text>
-            <Text display="inline">{'dave9000dave9000'}</Text>
-          </Text>
-        </Stack>
+            <Text display="inline">{username}</Text>
+          </Stack>
+        )}
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
           <ColorModeToggle />
 
-          <SignInOutButton />
+          {status === 'loading' ? <Box w={{ base: '42px', md: '70px' }}></Box> : <SignInOutButton />}
         </Stack>
       </Flex>
     </Box>

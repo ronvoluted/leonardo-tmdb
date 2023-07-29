@@ -1,3 +1,5 @@
+import type { User } from '@prisma/client';
+
 import NextAuth, { type AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
@@ -53,8 +55,6 @@ export const authOptions: AuthOptionsWithStrategy = {
           return {
             id: user.id.toString(),
             email: user.email,
-            username: user.username,
-            job_title: user.job_title,
           };
         } catch (err) {
           console.error(err instanceof Error ? err.message : 'Prisma error finding user');
