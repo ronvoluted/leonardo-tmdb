@@ -38,6 +38,16 @@ export default function WelcomeModal() {
   const [usernameInvalid, setUsernameInvalid] = useState(false);
   const usernameInputRef = useRef(null);
 
+  const navigateToUsername = () => {
+    setStep(1);
+    setProgress(50);
+  };
+
+  const navigateToJobTitle = () => {
+    setStep(2);
+    setProgress(100);
+  };
+
   const closeCancel = () => {
     setUserDetails({
       ...userDetails,
@@ -124,6 +134,11 @@ export default function WelcomeModal() {
                     title={patternMessage}
                     value={userDetails.username || ''}
                     onChange={handleUsernameChange}
+                    onKeyUp={(e) => {
+                      if (!usernameInvalid && e.key === 'Enter') {
+                        navigateToJobTitle();
+                      }
+                    }}
                     pattern="[a-z0-9_]{1,15}"
                     maxLength={15}
                   />
@@ -137,6 +152,11 @@ export default function WelcomeModal() {
                   id="jobTitle"
                   value={userDetails.jobTitle || ''}
                   onChange={(e) => setUserDetails({ ...userDetails, jobTitle: e.target.value })}
+                  onKeyUp={(e) => {
+                    if (userDetails.jobTitle && userDetails.jobTitle.length > 0 && e.key === 'Enter') {
+                      handleSubmit();
+                    }
+                  }}
                   required
                 />
               </FormControl>
@@ -148,10 +168,7 @@ export default function WelcomeModal() {
                         w="7rem"
                         colorScheme="blue"
                         variant="outline"
-                        onClick={() => {
-                          setStep(2);
-                          setProgress(100);
-                        }}
+                        onClick={() => navigateToJobTitle()}
                         isDisabled={!userDetails.username}
                       >
                         Next
@@ -159,15 +176,7 @@ export default function WelcomeModal() {
                     )}
 
                     {step === 2 && (
-                      <Button
-                        w="7rem"
-                        colorScheme="blue"
-                        variant="outline"
-                        onClick={() => {
-                          setStep(1);
-                          setProgress(50);
-                        }}
-                      >
+                      <Button w="7rem" colorScheme="blue" variant="outline" onClick={() => navigateToUsername()}>
                         Back
                       </Button>
                     )}
