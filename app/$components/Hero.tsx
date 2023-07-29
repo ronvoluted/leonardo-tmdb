@@ -1,5 +1,7 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
+
 import {
   Box,
   Heading,
@@ -35,6 +37,7 @@ export default function Hero({ getButtonProps }: HeroProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const buttonProps = getButtonProps();
   const signUpOpen = buttonProps['aria-expanded'];
+  const { data: session } = useSession();
 
   return (
     <>
@@ -58,18 +61,38 @@ export default function Hero({ getButtonProps }: HeroProps) {
           </Box>
 
           <Stack direction={'column'} spacing={3} align={'center'} alignSelf={'center'} position={'relative'}>
-            <Button
-              {...buttonProps}
-              colorScheme={'blue'}
-              px={6}
-              bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
-              _hover={{
-                bg: signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.500',
-              }}
-              style={signUpOpen && !prefersReducedMotion ? buttonStyleSignUpOpened : buttonStyle}
-            >
-              Get tickets
-            </Button>
+            {session && (
+              <Button
+                as="a"
+                variant="link"
+                href="/movies"
+                colorScheme={'blue'}
+                color="gray.50"
+                px={6}
+                py={2}
+                rounded="full"
+                bg={useColorModeValue('blue.300', 'blue.600')}
+                _hover={{
+                  bg: useColorModeValue('blue.400', 'blue.500'),
+                }}
+              >
+                Enter theatre
+              </Button>
+            )}
+            {!session && (
+              <Button
+                {...buttonProps}
+                colorScheme={'blue'}
+                px={6}
+                bg={signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.400'}
+                _hover={{
+                  bg: signUpOpen ? useColorModeValue('blue.400', 'blue.600') : 'blue.500',
+                }}
+                style={signUpOpen && !prefersReducedMotion ? buttonStyleSignUpOpened : buttonStyle}
+              >
+                Get tickets
+              </Button>
+            )}
             <Box>
               <Icon
                 as={Arrow}
@@ -81,11 +104,9 @@ export default function Hero({ getButtonProps }: HeroProps) {
               />
               <Text
                 fontSize={'md'}
-                fontFamily={'Inter'}
                 fontWeight={500}
                 position={'absolute'}
                 right={'-100px'}
-                top={'0px'}
                 transform={'rotate(20deg)'}
                 style={{ userSelect: 'none' }}
               >

@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { Inter } from 'next/font/google';
 
 import AuthProvider from '$AuthProvider';
 import ChakraProviders from '$ChakraProviders';
 import Navbar from '$Navbar';
 
-const inter = Inter({ subsets: ['latin'] });
 const title = 'Movies for the authenticated filmgoer';
 const description = 'Leonardo TMDB';
 const url = process.env.NEXT_PUBLIC_URL || 'https://leonardo-tmdb.vercel.app';
@@ -37,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <AuthProvider>
           <ChakraProviders cookies={cookieString}>
             <Navbar />

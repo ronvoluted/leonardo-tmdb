@@ -21,15 +21,14 @@ import {
   usePrefersReducedMotion,
   type useDisclosure,
 } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { motion } from 'framer-motion';
 
 type SignUpProps = {
   error?: Auth.SignUpError;
   getButtonProps: ReturnType<typeof useDisclosure>['getButtonProps'];
   getDisclosureProps: ReturnType<typeof useDisclosure>['getDisclosureProps'];
 };
-
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { motion } from 'framer-motion';
 
 const expandFrames = keyframes`
   from { scale: 0; opacity: 0; border-radius: 5%; }

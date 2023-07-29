@@ -7,14 +7,29 @@ export default function SignInOutButton() {
 
   if (!session) {
     return (
-      <Button variant={'link'} as={'a'} href="/api/auth/signin" w="5em" pr={2} fontSize={'sm'} fontWeight={400}>
+      <Button
+        variant={'link'}
+        as={'a'}
+        href="/api/auth/signin"
+        w={{ base: '3em', md: '5em' }}
+        pr={2}
+        fontSize={'sm'}
+        fontWeight={400}
+      >
         Sign in
       </Button>
     );
   }
 
   return (
-    <Button variant={'link'} onClick={() => signOut()} w="5em" pr={2} fontSize={'sm'} fontWeight={400}>
+    <Button
+      variant={'link'}
+      onClick={() => signOut()}
+      w={{ base: '3em', md: '5em' }}
+      pr={2}
+      fontSize={'sm'}
+      fontWeight={400}
+    >
       Sign out
     </Button>
   );
