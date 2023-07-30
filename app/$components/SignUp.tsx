@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-
+import { useState, FormEventHandler } from 'react';
+import { signIn } from 'next-auth/react';
 import {
   Flex,
   Box,
@@ -37,8 +37,25 @@ const expandFrames = keyframes`
 
 export default function SignUp({ error, getButtonProps, getDisclosureProps }: SignUpProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
-
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit: FormEventHandler = async (e) => {
+    e.preventDefault();
+
+    const signUpRes = await fetch('/api/user/signup', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+
+    if (signUpRes.ok) {
+      signIn('credentials', {
+        email: credentials.email,
+        password: credentials.password,
+        callbackUrl: '/movies',
+      });
+    }
+  };
 
   return (
     <Flex
@@ -70,15 +87,27 @@ export default function SignUp({ error, getButtonProps, getDisclosureProps }: Si
         )}
 
         <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.600')} boxShadow={'lg'} p={8}>
-          <Stack as="form" spacing={4} method="POST" action="/api/user/signup">
+          <Stack as="form" spacing={4} onSubmit={handleSubmit}>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" name="email" autoComplete="email" />
+              <Input
+                type="email"
+                name="email"
+                autoComplete="email"
+                value={credentials.email}
+                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} name="password" autoComplete="current-password" />
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  autoComplete="current-password"
+                  value={credentials.password}
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                />
                 <InputRightElement h={'full'}>
                   <Button variant={'ghost'} onClick={() => setShowPassword((showPassword) => !showPassword)}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}

@@ -14,8 +14,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const formData = await req.formData();
-  const credentials = <{ email?: string; password?: string }>Object.fromEntries(formData.entries());
+  const credentials = await req.json();
 
   if (!credentials?.email || !credentials?.password) {
     return NextResponse.json(
@@ -66,12 +65,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return new NextResponse(JSON.stringify({ success: true }), {
-      status: 303,
-      headers: {
-        location: '/movies',
-      },
-    });
+    return new NextResponse(JSON.stringify({ success: true }), { status: 201 });
   } catch (err) {
     console.error(err instanceof Error ? err.message : 'Error signing up');
 
