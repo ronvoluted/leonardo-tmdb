@@ -6,7 +6,7 @@
 
 ## Deployment
 
-[https:/leonardo-tmdb.vercel.app](https:/leonardo-tmdb.vercel.app)
+**[leonardo-tmdb.vercel.app](https://leonardo-tmdb.vercel.app)**
 
 ## Running locally
 
@@ -90,5 +90,5 @@ Normally commits would be more atomic but for blank projects the diffing is less
 - Changing email
 - Filtering movies by genre or sorting by rating/date
 - Constraints around job title (characters, length, etc)
-
+- Indicators for some loading/submit states
 
