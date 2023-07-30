@@ -2,7 +2,7 @@
 
 **Movies for the authenticated filmgoer**
 
-![]()
+<img width="854" alt="leonardo-tmdb" src="https://github.com/ronvoluted/leonardo-tmdb/assets/5785323/b5670d7c-7d65-4343-9966-cd5c9d4b9df0">
 
 ## Deployment
 
