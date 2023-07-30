@@ -40,6 +40,7 @@
   "devDependencies": {
     "@chakra-ui/next-js": "^2.1.5",
     "@supabase/supabase-js": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
     "dotenv-cli": "^7.2.1",
     "prisma": "^5.0.0",
     "supabase": "^1.77.9",
