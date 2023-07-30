@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Flex,
@@ -32,10 +32,12 @@ export default function SignInForm({ appUrl, searchParams }: SignInFormProps) {
 
   const error = typeof searchParams.error === 'string' ? searchParams.error : undefined;
 
-  fetch(`${appUrl}/api/auth/csrf`)
-    .then((res) => res.json())
-    .then((json) => setCsrfToken(json.csrfToken))
-    .catch((err) => console.error(err));
+  useEffect(() => {
+    fetch(`${appUrl}/api/auth/csrf`)
+      .then((res) => res.json())
+      .then((json) => setCsrfToken(json.csrfToken))
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <Flex
