@@ -1,6 +1,8 @@
 # Leonardo.ai - TMDB Full Stack App
 
-**Movies for the authenticated filmgoer**
+<p align="center">
+  <strong>Movies for the authenticated filmgoer</strong>
+</p>
 
 <img width="854" alt="leonardo-tmdb" src="https://github.com/ronvoluted/leonardo-tmdb/assets/5785323/b5670d7c-7d65-4343-9966-cd5c9d4b9df0">
 
