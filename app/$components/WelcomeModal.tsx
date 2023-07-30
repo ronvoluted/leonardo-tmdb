@@ -36,16 +36,21 @@ export default function WelcomeModal() {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(50);
   const [usernameInvalid, setUsernameInvalid] = useState(false);
-  const usernameInputRef = useRef(null);
+  const usernameInput = useRef<HTMLInputElement>(null);
+  const jobTitleInput = useRef<HTMLInputElement>(null);
 
   const navigateToUsername = () => {
     setStep(1);
     setProgress(50);
+
+    usernameInput.current?.focus();
   };
 
   const navigateToJobTitle = () => {
     setStep(2);
     setProgress(100);
+
+    jobTitleInput.current?.focus();
   };
 
   const closeCancel = () => {
@@ -127,9 +132,9 @@ export default function WelcomeModal() {
                 <FormLabel htmlFor="username" fontWeight={'normal'}>
                   Choose a username
                 </FormLabel>
-                <Tooltip label={patternMessage} isOpen={usernameInvalid} hasArrow>
+                <Tooltip label={patternMessage} isOpen={step === 1 && usernameInvalid} hasArrow>
                   <Input
-                    ref={usernameInputRef}
+                    ref={usernameInput}
                     id="username"
                     title={patternMessage}
                     value={userDetails.username || ''}
@@ -141,6 +146,7 @@ export default function WelcomeModal() {
                     }}
                     pattern="[a-z0-9_]{1,15}"
                     maxLength={15}
+                    autoFocus
                   />
                 </Tooltip>
               </FormControl>
@@ -149,6 +155,7 @@ export default function WelcomeModal() {
                   What's your job title?
                 </FormLabel>
                 <Input
+                  ref={jobTitleInput}
                   id="jobTitle"
                   value={userDetails.jobTitle || ''}
                   onChange={(e) => setUserDetails({ ...userDetails, jobTitle: e.target.value })}
@@ -157,7 +164,6 @@ export default function WelcomeModal() {
                       handleSubmit();
                     }
                   }}
-                  required
                 />
               </FormControl>
               <ButtonGroup mt="5%" w="100%">
