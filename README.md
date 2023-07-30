@@ -35,14 +35,8 @@ The choice of GraphQL API is an [unofficial wrapper around the TMDB API](https:/
 
 ## Remarks
 
-### `prisma` as non-dev dependency
-> Some platforms like Vercel, prune development dependencies during the build, thereby preventing you from calling the command. This can be worked around by making the prisma a production dependency, by moving it to dependencies in your package.json
->
->[https://www.prisma.io/docs/guides/deployment/deploy-database-changes-with-prisma-migrate](https://www.prisma.io/docs/guides/deployment/deploy-database-changes-with-prisma-migrate#:~:text=some%20platforms%20like%20vercel)
-
 ### Config
 The Prettier, ESLint and TypeScript configs work for me but would naturally be replaced by agreed-upon choices in a team.
-
 
 ### @modules and $path aliases
 Not common practice but something I wanted to try— the intent being to eliminate mental overhead of writing relative paths:
