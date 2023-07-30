@@ -1,6 +1,6 @@
-import type { User } from '@prisma/client';
-
 import type { Metadata } from 'next';
+import type { Session } from 'next-auth';
+
 import { cookies } from 'next/headers';
 import { getServerSession } from 'next-auth/next';
 
@@ -31,36 +31,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);
+const getServerUser = async (session: Session | null): Promise<Auth.UserDetails | undefined> => {
+  if (!session?.user || !session.user.email) {
+    return;
+  }
 
-  let serverUser: Auth.UserDetails | undefined;
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
 
-  try {
-    if (!session?.user || !session.user.email) {
-      throw new Error('No session details found');
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    serverUser = {
+  if (user) {
+    return {
       id: user.id,
       email: user.email,
       username: user.username,
       jobTitle: user.job_title,
     };
-  } catch (err) {
-    console.error(err instanceof Error ? err.message : 'Error querying user');
   }
+};
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions);
+  const serverUser = await getServerUser(session);
 
   const cookieStore = cookies();
-
   const cookieString = cookieStore
     .getAll()
     .map((cookie) => `${cookie.name}=${cookie.value}`)
