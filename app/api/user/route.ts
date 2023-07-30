@@ -55,6 +55,15 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error(err instanceof Error ? err.message : 'Error querying user');
 
-    return null;
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Error querying user',
+      },
+      {
+        status: 500,
+        headers: { 'content-type': 'application/json' },
+      }
+    );
   }
 }
