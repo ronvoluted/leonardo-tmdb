@@ -23,7 +23,7 @@ npm i && npm run dev
 ## Implementation
 
 ### Authentication
-Supabase hosts the PostgreSQL database, with Prisma managing it's schema/making queries. NextAuth (Auth.js) is used for authentication status and protected routes, with credentials password login enabled for both email and username. Passwords are secured as follows: `hash(password + pepper, salt)`
+Supabase hosts the PostgreSQL database, with Prisma managing its schema/making queries. NextAuth (Auth.js) is used for authentication status and protected routes, with credentials password login enabled for both email and username. Passwords are secured as follows: `hash(password + pepper, salt)`
 
 - The salt is a random 16-byte buffer stored next to the hashed password in the database, used to protect against rainbow table attacks
 - The pepper is a random 16-char alphanumeric string stored as an environment variable/deployment secret, used to protect against dictionary attacks
