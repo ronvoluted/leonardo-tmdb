@@ -12,7 +12,8 @@
     "push": "npm run env -- npx prisma db push",
     "pull": "npm run env -- npx prisma db pull",
     "execute": "npm run env -- npx prisma db execute",
-    "env": "dotenv -e .env.local"
+    "env": "dotenv -e .env.local",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-rc.1",
